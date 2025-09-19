@@ -1,0 +1,471 @@
+/* 控制面板样式文件 */
+
+.controls-section {
+    position: relative;
+}
+
+.controls-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 35px;
+}
+
+.control-group {
+    background: rgba(247, 250, 252, 0.5);
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid rgba(226, 232, 240, 0.5);
+    transition: all 0.3s ease;
+}
+
+.control-group:hover {
+    border-color: rgba(102, 126, 234, 0.3);
+    background: rgba(102, 126, 234, 0.05);
+}
+
+.control-group:focus-within {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.control-group label {
+    font-weight: 700;
+    color: #4a5568;
+    margin-bottom: 12px;
+    display: block;
+    font-size: 1rem;
+}
+
+.control-group select,
+.control-group input[type="number"] {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1rem;
+    background: white;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.control-group select:focus,
+.control-group input[type="number"]:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+/* 自定义尺寸输入 */
+.size-inputs {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.size-inputs input {
+    flex: 1;
+    min-width: 0;
+}
+
+.size-inputs span {
+    font-weight: 700;
+    color: #718096;
+    font-size: 1.2rem;
+}
+
+/* 操作按钮区域 */
+.action-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    border-top: 2px solid rgba(226, 232, 240, 0.5);
+}
+
+.action-buttons .btn {
+    min-width: 140px;
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-buttons .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.action-buttons .btn:hover::before {
+    left: 100%;
+}
+
+.action-buttons .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.action-buttons .btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* 进度区域 */
+.progress-section {
+    background: rgba(102, 126, 234, 0.05) !important;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: rgba(226, 232, 240, 0.8);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 6px;
+    transition: width 0.5s ease;
+    width: 0%;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%);
+    background-size: 20px 20px;
+    animation: progressStripes 1s linear infinite;
+}
+
+@keyframes progressStripes {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 20px 0;
+    }
+}
+
+.progress-text {
+    text-align: center;
+    color: #4a5568;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0 20px;
+}
+
+/* 模态框样式 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px) scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #718096;
+    transition: color 0.3s ease;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    color: #e53e3e;
+}
+
+.modal h3 {
+    color: #4a5568;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.modal-message {
+    margin-bottom: 30px;
+    color: #4a5568;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+.modal-buttons .btn {
+    min-width: 120px;
+}
+
+/* 提示信息 */
+.hint-box {
+    background: rgba(102, 126, 234, 0.1);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.hint-box::before {
+    content: "💡";
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 1.2rem;
+}
+
+.hint-box h4 {
+    color: #667eea;
+    font-weight: 700;
+    margin-bottom: 10px;
+    margin-left: 35px;
+    font-size: 1rem;
+}
+
+.hint-box p {
+    color: #4a5568;
+    margin-left: 35px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* 设置预设 */
+.preset-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.preset-btn {
+    padding: 8px 16px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    color: #4a5568;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.preset-btn:hover {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.05);
+}
+
+.preset-btn.active {
+    border-color: #667eea;
+    background: #667eea;
+    color: white;
+}
+
+/* 高级设置 */
+.advanced-settings {
+    background: rgba(247, 250, 252, 0.5);
+    border: 2px solid rgba(226, 232, 240, 0.5);
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 25px;
+}
+
+.advanced-toggle {
+    background: none;
+    border: none;
+    color: #667eea;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.advanced-toggle:hover {
+    color: #5a67d8;
+}
+
+.advanced-toggle::after {
+    content: "▼";
+    transition: transform 0.3s ease;
+}
+
+.advanced-toggle.collapsed::after {
+    transform: rotate(-90deg);
+}
+
+.advanced-content {
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.advanced-content.show {
+    display: block;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .controls-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .action-buttons .btn {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .size-inputs {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .size-inputs span {
+        display: none;
+    }
+    
+    .modal-content {
+        padding: 30px 20px;
+        margin: 20px;
+        width: calc(100% - 40px);
+    }
+    
+    .modal-buttons {
+        flex-direction: column;
+    }
+    
+    .modal-buttons .btn {
+        width: 100%;
+    }
+    
+    .preset-buttons {
+        flex-direction: column;
+    }
+    
+    .preset-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .control-group {
+        padding: 15px;
+    }
+    
+    .action-buttons {
+        padding-top: 15px;
+    }
+    
+    .modal-content {
+        padding: 25px 15px;
+    }
+}
+
+/* 加载状态 */
+.btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: buttonSpin 1s linear infinite;
+}
+
+@keyframes buttonSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

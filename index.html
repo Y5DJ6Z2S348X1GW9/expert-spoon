@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片转PDF工具</title>
+    
+    <!-- CSS模块 -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/upload.css">
+    <link rel="stylesheet" href="styles/preview.css">
+    <link rel="stylesheet" href="styles/controls.css">
+    <link rel="stylesheet" href="styles/enhancements.css">
+    
+    <!-- 第三方库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 头部 -->
+        <header class="app-header">
+            <h1>图片转PDF工具</h1>
+            <p>支持无限数量图片，智能顺序检测，专业PDF生成</p>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="app-main">
+            <!-- 上传区域 -->
+            <section class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📁</div>
+                    <h3>拖拽图片到这里或点击选择</h3>
+                    <p>支持 JPG, PNG, GIF, WEBP 格式，无数量限制</p>
+                    <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+                    <button class="upload-btn" id="uploadBtn">选择图片</button>
+                </div>
+                
+                <!-- 文件信息显示 -->
+                <div class="file-info" id="fileInfo" style="display: none;">
+                    <div class="info-item">
+                        <span>已选择文件：</span>
+                        <span id="fileCount">0</span>
+                    </div>
+                    <div class="info-item">
+                        <span>总大小：</span>
+                        <span id="totalSize">0 MB</span>
+                    </div>
+                    <div class="info-item">
+                        <span>顺序状态：</span>
+                        <span id="orderStatus">检测中...</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 控制面板 -->
+            <section class="controls-section" id="controlsSection" style="display: none;">
+                <h3>PDF设置</h3>
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label for="pageSize">页面大小：</label>
+                        <select id="pageSize">
+                            <option value="a4">A4 (210×297mm)</option>
+                            <option value="a3">A3 (297×420mm)</option>
+                            <option value="a5">A5 (148×210mm)</option>
+                            <option value="letter">Letter (216×279mm)</option>
+                            <option value="legal">Legal (216×356mm)</option>
+                            <option value="custom">自定义</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group" id="customSizeGroup" style="display: none;">
+                        <label>自定义尺寸 (mm)：</label>
+                        <div class="size-inputs">
+                            <input type="number" id="customWidth" placeholder="宽度" min="50" max="1000">
+                            <span>×</span>
+                            <input type="number" id="customHeight" placeholder="高度" min="50" max="1000">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="pageMargin">页边距 (mm)：</label>
+                        <input type="number" id="pageMargin" value="10" min="0" max="50">
+                    </div>
+
+                    <div class="control-group">
+                        <label for="imageQuality">图片质量：</label>
+                        <select id="imageQuality">
+                            <option value="0.9">高质量 (90%)</option>
+                            <option value="0.8" selected>标准质量 (80%)</option>
+                            <option value="0.7">压缩质量 (70%)</option>
+                            <option value="0.6">小文件 (60%)</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="orientation">页面方向：</label>
+                        <select id="orientation">
+                            <option value="auto">自动检测</option>
+                            <option value="portrait">纵向</option>
+                            <option value="landscape">横向</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="imageSharpness">图片清晰度增强：</label>
+                        <select id="imageSharpness">
+                            <option value="0">关闭</option>
+                            <option value="1" selected>轻度增强</option>
+                            <option value="2">中度增强</option>
+                            <option value="3">强度增强</option>
+                        </select>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="outputFilename">PDF文件名：</label>
+                        <input type="text" id="outputFilename" placeholder="请输入文件名（不含扩展名）" maxlength="100">
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-secondary" id="clearBtn">清空重选</button>
+                    <button class="btn btn-primary" id="generateBtn">生成PDF</button>
+                </div>
+            </section>
+
+            <!-- 预览区域 -->
+            <section class="preview-section" id="previewSection" style="display: none;">
+                <h3>图片预览与排序</h3>
+                <div class="preview-toolbar">
+                    <button class="btn btn-small" id="sortByName">按名称排序</button>
+                    <button class="btn btn-small" id="sortByDate">按日期排序</button>
+                    <button class="btn btn-small" id="reverseOrder">反转顺序</button>
+                </div>
+                <div class="preview-grid" id="previewGrid">
+                    <!-- 预览图片将在这里动态生成 -->
+                </div>
+            </section>
+
+            <!-- 进度显示 -->
+            <section class="progress-section" id="progressSection" style="display: none;">
+                <h3>生成进度</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">准备中...</div>
+            </section>
+        </main>
+
+        <!-- 底部 -->
+        <footer class="app-footer">
+            <p>© 2025 图片转PDF工具 - 纯前端实现，数据不上传</p>
+        </footer>
+    </div>
+
+    <!-- 模态框 -->
+    <div class="modal" id="orderModal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <h3>文件顺序检测</h3>
+            <div id="modalMessage"></div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" id="modalCancel">重新选择</button>
+                <button class="btn btn-primary" id="modalContinue" style="display: none;">继续处理</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS模块 -->
+    <script src="js/fileHandler.js"></script>
+    <script src="js/orderDetector.js"></script>
+    <script src="js/imageProcessor.js"></script>
+    <script src="js/memoryManager.js"></script>
+    <script src="js/performanceMonitor.js"></script>
+    <script src="js/imageEnhancerCore.js"></script>
+    <script src="js/imageEnhancerMobile.js"></script>
+    <script src="js/imageEnhancer.js"></script>
+    <script src="js/filenameManager.js"></script>
+    <script src="js/pdfGenerator.js"></script>
+    <script src="js/uiController.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

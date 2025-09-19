@@ -1,0 +1,20 @@
+{
+  "path": "d:\\ai\\A\\116",
+  "desc": "这是一个图片转PDF的前端工具，支持无限数量图片，智能顺序检测，专业PDF生成。用户可以拖拽或选择图片，设置PDF参数，并生成高质量PDF文件。",
+  "id": "34195c48d86b4bc9a6508c79f989d5fe",
+  "data": {
+    "spaceKey": "34195c48d86b4bc9a6508c79f989d5fe",
+    "connections": {
+      "webIDE": "https://34195c48d86b4bc9a6508c79f989d5fe.codebuddy.cloudstudio.club",
+      "preview": "",
+      "api": "https://34195c48d86b4bc9a6508c79f989d5fe--api.codebuddy.cloudstudio.club",
+      "pty": "https://34195c48d86b4bc9a6508c79f989d5fe--pty.codebuddy.cloudstudio.club"
+    }
+  },
+  "config": {
+    "api": "https://34195c48d86b4bc9a6508c79f989d5fe--api.codebuddy.cloudstudio.club",
+    "pty": "https://34195c48d86b4bc9a6508c79f989d5fe--pty.codebuddy.cloudstudio.club",
+    "region": "ap-shanghai",
+    "spaceKey": "34195c48d86b4bc9a6508c79f989d5fe"
+  }
+}
